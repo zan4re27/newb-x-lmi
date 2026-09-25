@@ -1,0 +1,10 @@
+{
+  "materials": {
+    "version": "1.0.0",
+    
+    "trim:entity_alphatest": {
+      "+defines": [ "USE_EMISSIVE" ],
+      "depthFunc": "LessEqual"
+    }
+  }
+}

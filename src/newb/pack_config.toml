@@ -1,13 +1,13 @@
-name = "Newb Classic"
-version = [0, 16, 56]
-min_supported_mc_version = [1, 26, 50]
+name = "Newb X LMI"
+version = [0, 16, 0]
+min_supported_mc_version = [1, 26, 40]
 description = '''
 §c%w
-§7- An enchanced vanilla shader for Minecraft!
+§7- A Variant of an enchanced vanilla shader (Newb Shader) for Minecraft!
 %v
 §3https://newb-shader.devendrn.com/
 ''' # %w = patch warning, %v = version
-authors = ["devendrn"]
+authors = ["zan4re27", "devendrn"]
 url = "https://newb-shader.devendrn.com/"
 uuid = "95f774cf-4afa-73e7-a21a-72146307b1d2" # Use https://www.uuidgenerator.net/version4
 materials = ["Actor", "ActorGlint", "ActorMultiTexture", "Clouds", "EndSky", "ItemInHandColor", "ItemInHandColorGlint", "ItemInHandTextured", "RenderChunk","Sky", "Stars", "SunMoon", "Weather"]
@@ -31,57 +31,79 @@ credits = '''
 define = "REALISTIC_CLOUDS"
 materials = ["Clouds", "RenderChunk"]
 description = '''
-Realistic clouds
+§lRealistic clouds§r\nMore Realistic looking clouds
 '''
 
 [[subpack]]
-define = "ROUNDED_CLOUDS"
+define = "SOFT_CLOUDS"
 materials = ["Clouds"]
 description = '''
-Rounded Clouds
+§lSoft Clouds§r\nSoft and light Clouds
 '''
 
 [[subpack]]
-define = "BOX_CLOUDS"
+define = "VANILLA_CLOUDS"
 materials = ["Clouds", "RenderChunk"]
 description = '''
-Box Clouds
+§lImproved Vanilla Clouds§r\nVanilla clouds look but improved
 '''
 
 [[subpack]]
-define = "CHUNK_ANIM"
+define = "RAINBOW"
+materials = ["Sky"]
+description = '''
+§lRainbow§r\nAdd rainbow to your sky
+'''
+
+[[subpack]]
+define = "NO_SHOOTING_STARS"
 materials = ["RenderChunk"]
 description = '''
-Chunk loading animation
+§lDisable Shooting Stars§r\nfor someone who doesn't like it
 '''
+
+[[subpack]]
+define = "NIGHT_VISION"
+materials = ["RenderChunk"]
+description = '''
+§lNight vision§r\nBrighter dark areas
+'''
+
+[[subpack]]
+define = "GROUND_REFL"
+materials = ["RenderChunk"]
+description = '''
+§lGround reflection§r\nAdd reflection like visual
+'''
+
 
 [[subpack]]
 define = "NO_WAVE_NO_FOG"
 materials = ["RenderChunk"]
 description = '''
-No fog and wave effects
+§lNo fog and wave effects
 '''
 
 [[subpack]]
 define = "NO_FOG"
 materials = ["RenderChunk"]
 description = '''
-No fog effect
+§lNo fog effect
 '''
 
 [[subpack]]
 define = "NO_WAVE"
 materials = ["RenderChunk"]
 description = '''
-No wave effects
+§lNo wave effects
 '''
 
-#[[subpack]]
-#define = "LITE"
-#materials = ["Sky", "RenderChunk", "Actor", "ActorGlint", "EndSky", "Clouds", "SunMoon", "Weather", "ItemInHandTextured", "ItemInHandColor", "ItemInHandColorGlint", "Stars"]
-#description = '''
-#Many effects disabled. A bit lighter!
-#'''
+[[subpack]]
+define = "LITE"
+materials = ["Sky", "RenderChunk", "Actor", "ActorGlint", "EndSky", "Clouds", "SunMoon", "Weather", "ItemInHandTextured", "ItemInHandColor", "ItemInHandColorGlint", "Stars"]
+description = '''
+§lLite!§r\nLots of effect is disabled for smoother experience
+'''
 
 [[subpack]]
 define = "DEFAULT"

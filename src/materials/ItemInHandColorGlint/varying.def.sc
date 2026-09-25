@@ -13,3 +13,4 @@ vec4 v_light     : COLOR3;
 vec2 v_texcoord0 : TEXCOORD0;
 vec4 v_glintuv   : TEXCOORD2;
 vec4 v_edgemap   : COLOR4;
+vec3 v_wpos		 : TEXCOORD1;

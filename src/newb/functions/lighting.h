@@ -56,7 +56,7 @@ vec3 nlLighting(
   } else {
     // overworld lighting
     float nightFactor = step(env.dayFactor, 0.0);
-    float dawnFactor = 1.0-env.dayFactor*env.dayFactor;
+    float dawnFactor = 1.0-smoothstep(0.0, 0.7, abs(env.dayFactor));
     dawnFactor *= dawnFactor*dawnFactor;
     dawnFactor *= mix(1.0, dawnFactor*dawnFactor, nightFactor);
     float nightIntensity = 1.0-(0.5+0.5*env.dayFactor);
@@ -96,7 +96,9 @@ vec3 nlLighting(
     // sky ambient
     lum = luminance(light);
     light += (skycol.horizon + skycol.zenith)*(uv1.y/(1.0+lum));
-
+    
+    // rain dimming
+    light *= mix(1.0, 0.75, smoothstep(0.0, 1.0, env.rainFactor));
   }
 
   // torch light
@@ -152,7 +154,7 @@ vec3 nlEntityLighting(nl_skycolor skycol, nl_environment env, vec3 pos, vec4 nor
     tl *= 4.0*tl;
 
     float nightFactor = step(env.dayFactor, 0.0);
-    float dawnFactor = 1.0-env.dayFactor*env.dayFactor;
+    float dawnFactor = 1.0-smoothstep(0.0, 0.7, abs(env.dayFactor));
     dawnFactor *= dawnFactor*dawnFactor;
     dawnFactor *= mix(1.0, dawnFactor*dawnFactor, nightFactor);
     float nightIntensity = 1.0-(0.5+0.5*env.dayFactor);
@@ -170,6 +172,9 @@ vec3 nlEntityLighting(nl_skycolor skycol, nl_environment env, vec3 pos, vec4 nor
     // sky ambient
     lum = luminance(light);
     light += (skycol.horizon + skycol.zenith)*(l/(1.0+lum));
+    
+    // rain dimming
+    light *= mix(1.0, 0.75, smoothstep(0.0, 1.0, env.rainFactor));
   }
 
   // torch light
@@ -191,7 +196,7 @@ vec3 nlEntityLighting(nl_skycolor skycol, nl_environment env, vec3 pos, vec4 nor
   lum = luminance(light);
   if (!(env.nether || env.end)) {
     lum = luminance(light);
-    light += vec3_splat(min(tileLightCol.r, 0.15)*(NL_MIN_LIGHTING_BOOST/(1.0+lum)));
+    light += vec3_splat(min(tileLightCol.r, 0.45)*(NL_MIN_LIGHTING_BOOST/(1.0+lum)));
   }
 
   if (env.underwater) {
@@ -228,6 +233,35 @@ vec4 nlLavaNoise(vec3 gPos, float t) {
   float n = movingNoise2D(gPos.xz + gPos.yy, NL_LAVA_NOISE_SPEED*t, 0.9);
   n *= n;
   return vec4(mix(vec3(0.7, 0.4, 0.0)*smoothstep(-0.1, 0.5, n), vec3_splat(1.5), n*n),n);
+}
+
+float dirShadow(vec3 normal, vec3 sunDir, float skylight) {
+    float shadou = 0.45;
+    
+    float sunDot = dot(normal, sunDir);
+    float intensity = 1.0 - smoothstep(0.0, 0.2, sunDot);
+    intensity = clamp(intensity, 0.0, 1.0);
+    
+    float noonFade = smoothstep(0.95, 0.7, sunDir.y);
+    intensity *= noonFade;
+    
+    float fac = mix(1.0, shadou, intensity);
+    
+    float nsShadow = mix(1.0, shadou, abs(normal.z));
+    fac *= nsShadow;
+    
+    float topFade = smoothstep(0.707, -0.259, sunDir.y);
+    if (normal.y > 0.9) {
+        fac *= mix(1.0, shadou, topFade);
+    }
+    
+    float skyFade = smoothstep(0.0, 0.3, skylight);
+    fac = mix(1.0, fac, skyFade);
+    
+    float heightFade = smoothstep(-0.35, -0.34, sunDir.y);
+    fac = mix(1.0, fac, heightFade);
+    
+    return fac;
 }
 
 #endif

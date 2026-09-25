@@ -1,0 +1,30 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "minecraft:diamond_leggings",
+      "materials": {
+        "enchanted": "armor_enchanted",
+        "default": "armor",
+        "trim": "trim"
+      },
+      "textures": {
+        "default": "textures/models/armor/blank1",
+        "enchanted": "textures/misc/enchanted_actor_glint",
+        "armor": "textures/models/armor/diamond_2"
+      },
+      "geometry": {
+        "default": "geometry.humanoid.armor.leggings",
+        "trim": "geometry.humanoid.armor.leggings.trim"
+      },
+      "scripts": {
+        "parent_setup": "variable.leg_layer_visible = 0.0;",
+        "pre_animation": [
+          "variable.use_baby_geo = query.is_baby && c.owning_entity->v.use_dedicated_baby_armor;"
+        ]
+      },
+      "render_controllers": [ "controller.render.armor.default", {"controller.render.armor.trim": "v.has_trim"} ]
+    }
+  }
+}
+}

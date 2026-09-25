@@ -1,4 +1,4 @@
-$input v_color0, v_fog, v_light
+$input v_color0, v_fog, v_light, v_wpos
 
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/ActorUtil.dragonh>
@@ -9,6 +9,7 @@ uniform vec4 OverlayColor;
 uniform vec4 ColorBased;
 uniform vec4 MatColor;
 uniform vec4 MultiplicativeTintColor;
+uniform vec4 TimeOfDay;
 
 void main() {
   #if defined(DEPTH_ONLY) || defined(INSTANCING)
@@ -32,8 +33,23 @@ void main() {
       discard;
     }
   #endif
-
+  
+  vec3 unlitColor = albedo.rgb;
   albedo.rgb *= albedo.rgb * v_light.rgb;
+  
+  float t = 2.0 * PI * TimeOfDay.x;
+  vec3 sunDir = vec3(-sin(t), cos(t), 0.0);
+
+  vec3 wmap = normalize(cross(dFdx(v_wpos), dFdy(v_wpos)));
+  float skylight = luminance(v_light.rgb);
+  float ds = dirShadow(wmap, sunDir, skylight);
+  albedo.rgb *= ds;
+  
+  bool glowing = v_color0.a <= 0.99;
+  if (glowing) {
+    float glowBoost = 0.65;
+    albedo.rgb += unlitColor * glowBoost;
+  }
 
   albedo.rgb = mix(albedo.rgb, v_fog.rgb, v_fog.a);
 

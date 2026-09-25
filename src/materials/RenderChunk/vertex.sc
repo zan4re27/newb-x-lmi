@@ -2,7 +2,7 @@ $input a_color0, a_position, a_texcoord0, a_texcoord1
 #ifdef INSTANCING
   $input i_data0, i_data1, i_data2, i_data3
 #endif
-$output v_color0, v_color1, v_fog, v_refl, v_texcoord0, v_lightmapUV, v_extra
+$output v_color0, v_color1, v_fog, v_refl, v_texcoord0, v_lightmapUV, v_extra, v_wPos, v_isTree, v_time
 
 #include <bgfx_shader.sh>
 #include <newb/main.sh>
@@ -116,15 +116,14 @@ void main() {
 
   vec4 fogColor;
   fogColor.rgb = nlRenderSky(skycol, env, viewDir, t, true);
-  fogColor.a = nlRenderFogFade(relativeDist, FogColor.rgb, FogAndDistanceControl.xy);
+  fogColor.a = nlRenderFogFade(env, skycol, fogColor.rgb, relativeDist, FogColor.rgb, FogAndDistanceControl.xy, worldPos, vec3(0.0,0.0,0.0), t);
   #if defined(NL_GODRAY) && defined(NL_FOG)
-    fogColor.a = mix(fogColor.a, 1.0, min(NL_GODRAY*nlRenderGodRayIntensity(cPos, worldPos, t, uv1, relativeDist, FogColor.rgb), 1.0));
+    fogColor.a = nlRenderGodRay(cPos, worldPos, t, uv1, relativeDist, FogColor.rgb, fogColor.a);
   #endif
 
-  if (env.nether) {
-    // blend fog with void color
+  /*if (env.nether) {
     fogColor.rgb = colorCorrectionInv(FogColor.rgb);
-  }
+  }*/
 
   #if defined(NL_CLOUDY_FOG) && defined(NL_FOG)
     float fg = smoothstep(0.0, 1.0-NL_CLOUDY_FOG, relativeDist);
@@ -186,6 +185,9 @@ void main() {
   v_color0 = color;
   v_color1 = a_color0;
   v_fog = fogColor;
+  v_wPos = worldPos;
+  v_isTree = isTree ? 1.0 : 0.0;
+  v_time = t;
 
   #else
 

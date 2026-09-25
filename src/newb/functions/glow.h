@@ -100,7 +100,7 @@ vec4 nlGlint(vec4 light, vec4 layerUV, sampler2D glintTexture, vec4 glintColor, 
   vec4 glint = (tex1*tex1 + tex2*tex2) * tileLightColor * glintColor;
 
   light.rgb = light.rgb*(1.0-0.4*glint.a) + 80.0*glint.rgb;
-  light.rgb += vec3(0.1,0.0,0.1) + 0.2*spectrum(sin(layerUV.x*9.42477 + 2.0*glint.a + d));
+  //light.rgb += vec3(0.1,0.0,0.1) + 0.2*spectrum(sin(layerUV.x*9.42477 + 2.0*glint.a + d));
 
   return light;
 }

@@ -35,6 +35,11 @@ vec4 nlRefl(
       #ifndef NL_GROUND_REFL
         wetness *= puddles;
         float reflective = wetness*env.rainFactor*NL_GROUND_RAIN_WETNESS;
+        if (env.end) {
+          reflective = 0.8;
+        } else if (env.nether) {
+          reflective = 0.2;
+        }
       #else
         float reflective = NL_GROUND_REFL;
         if (!env.end && !env.nether) {
@@ -64,7 +69,7 @@ vec4 nlRefl(
     }
 
     // darken wet parts
-    color.rgb *= 1.0 - 0.4*wetness*env.rainFactor;
+    color.rgb *= 1.0 - 0.1*wetness*env.rainFactor;
 
   #ifndef NL_GROUND_REFL
   }

@@ -89,4 +89,10 @@ float movingNoise2D(vec2 pos, float t, float f) {
   return mix(n0*n0, n1*n1, f);
 }
 
+float hash(vec2 p) {
+  p = fract(p*vec2(123.45, 678.12));
+  p += dot(p, p + 50.0);
+  return fract(p.x*p.y);
+}
+
 #endif

@@ -1,0 +1,33 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "minecraft:chainmail_leggings.player",
+      "item": { "minecraft:chainmail_leggings": "query.owner_identifier == 'minecraft:player'" },
+      "materials": {
+        "enchanted": "armor_enchanted",
+        "default": "armor",
+        "trim": "trim"
+      },
+      "textures": {
+        "default": "textures/models/armor/blank1",
+        "enchanted": "textures/misc/enchanted_actor_glint",
+        "armor": "textures/models/armor/chain_2"
+      },
+      "geometry": {
+        "default": "geometry.player.armor.leggings",
+        "trim": "geometry.player.armor.leggings.trim"
+      },
+      "scripts": {
+        "parent_setup": "variable.leg_layer_visible = 0.0;",
+        "animate": [
+          "offset"
+        ]
+      },
+      "animations": {
+        "offset": "animation.armor.leggings.offset"
+      },
+      "render_controllers": [ "controller.render.armor.player_default", {"controller.render.armor.player_trim": "v.has_trim"} ]
+    }
+  }
+}

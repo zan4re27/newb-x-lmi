@@ -1,0 +1,15 @@
+{
+  "format_version": "1.8.0",
+  "render_controllers": {
+    "controller.render.armor.trim": {
+      "geometry": "Geometry.trim",
+      "materials": [ { "*": "Material.trim" } ],
+      "textures": [ "v.has_trim ? v.trim_path : Texture.default" ]
+    },
+    "controller.render.armor.default": {
+      "geometry": "Geometry.default",
+      "materials": [ { "*": "v.is_enchanted ? Material.enchanted : Material.default" } ],
+      "textures": [ "Texture.armor", "Texture.enchanted" ]
+    }
+  }
+}

@@ -20,3 +20,4 @@ vec4 v_light : COLOR2;
 vec4 v_edgemap : COLOR3;
 
 centroid vec2 v_texcoord0 : TEXCOORD0;
+vec3 v_wpos : TEXCOORD1;

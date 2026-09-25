@@ -2,7 +2,7 @@ $input a_indices, a_color0, a_normal, a_position, a_texcoord0
 #ifdef INSTANCING
   $input i_data1, i_data2, i_data3
 #endif
-$output v_color0, v_fog, v_light, v_texcoord0, v_edgemap
+$output v_color0, v_fog, v_light, v_texcoord0, v_edgemap, v_wpos
 
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/DynamicUtil.dragonh>
@@ -50,7 +50,7 @@ void main() {
 
     vec4 fogColor;
     fogColor.rgb = nlRenderSky(skycol, env, viewDir, ViewPositionAndTime.w, false);
-    fogColor.a = nlRenderFogFade(relativeDist, FogColor.rgb, FogControl.xy);
+    fogColor.a = nlRenderFogFade(env, skycol, fogColor.rgb, relativeDist, FogColor.rgb, FogControl.xy, worldPosition.xyz, vec3_splat(0.0), ViewPositionAndTime.w);
 
     if (env.nether) {
       // blend fog with void color
@@ -63,6 +63,7 @@ void main() {
     v_color0 = a_color0;
     v_fog = fogColor;
     v_light = vec4(light, 1.0);
+    v_wpos = worldPosition;
     #ifdef NL_ENTITY_EDGE_HIGHLIGHT
       v_edgemap = nlEntityEdgeHighlightPreprocess(texcoord0);
     #else

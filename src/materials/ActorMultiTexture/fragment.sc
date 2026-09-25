@@ -1,4 +1,4 @@
-$input v_color0, v_fog, v_light, v_texcoord0, v_edgemap
+$input v_color0, v_fog, v_light, v_texcoord0, v_edgemap, v_wpos
 
 #include <bgfx_shader.sh>
 #include <MinecraftRenderer.Materials/ActorUtil.dragonh>
@@ -11,6 +11,7 @@ uniform vec4 ChangeColor;
 uniform vec4 MultiplicativeTintColor;
 uniform vec4 MatColor;
 uniform vec4 TintedAlphaTestEnabled;
+uniform vec4 TimeOfDay;
 
 SAMPLER2D_AUTOREG(s_MatTexture2);
 SAMPLER2D_AUTOREG(s_MatTexture1);
@@ -58,6 +59,17 @@ void main() {
   #endif
 
   albedo = applyLighting(albedo, light);
+  
+  float t = 2.0 * PI * TimeOfDay.x;
+  vec3 sunDir = vec3(-sin(t), cos(t), 0.0);
+
+  vec3 wmap = normalize(cross(dFdx(v_wpos), dFdy(v_wpos)));
+  float skylight = luminance(v_light.rgb);
+  float ds = dirShadow(wmap, sunDir, skylight);
+  albedo.rgb *= ds;
+  
+  vec3 glow = nlGlow(s_MatTexture, v_texcoord0, 1.0);
+  albedo.rgb += glow;
 
   #ifdef NL_ENTITY_EDGE_HIGHLIGHT
     albedo.rgb *= nlEntityEdgeHighlight(v_edgemap);

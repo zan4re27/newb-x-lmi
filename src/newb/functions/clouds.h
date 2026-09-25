@@ -37,21 +37,24 @@ vec4 renderCloudsSimple(nl_skycolor skycol, vec3 pos, highp float t, float rain)
 }
 
 // rounded clouds
-// rounded clouds 3D density map
-float cloudDf(vec3 pos, float rain, vec2 boxiness) {
+float cloudDf(vec3 pos, float rain, vec2 boxiness, sampler2D cloudTex) {
   boxiness *= 0.999;
   vec2 p0 = floor(pos.xz);
   vec2 u = max((pos.xz-p0-boxiness.x)/(1.0-boxiness.x), 0.0);
   u *= u*(3.0 - 2.0*u);
 
-  vec4 r = vec4(rand(p0), rand(p0+vec2(1.0,0.0)), rand(p0+vec2(1.0,1.0)), rand(p0+vec2(0.0,1.0)));
-  r = smoothstep(0.1001+0.2*rain, 0.1+0.2*rain*rain, r); // rain transition
+  vec4 r = vec4(
+    texture2DLod(cloudTex, fract(p0*0.01), 0).r,
+    texture2DLod(cloudTex, fract((p0+vec2(1.0,0.0))*0.01), 0).r,
+    texture2DLod(cloudTex, fract((p0+vec2(1.0,1.0))*0.01), 0).r,
+    texture2DLod(cloudTex, fract((p0+vec2(0.0,1.0))*0.01), 0).r
+  );
+  r = smoothstep(0.8, 1.0, r); // rain transition
 
   float n = mix(mix(r.x,r.y,u.x), mix(r.w,r.z,u.x), u.y);
 
   // round y
   n *= 1.0 - 1.5*smoothstep(boxiness.y, 2.0 - boxiness.y, 2.0*abs(pos.y-0.5));
-
 
   n = max(1.25*(n-0.2), 0.0); // smoothstep(0.2, 1.0, n)
   n *= n*(3.0 - 2.0*n);
@@ -59,12 +62,11 @@ float cloudDf(vec3 pos, float rain, vec2 boxiness) {
 }
 
 vec4 renderCloudsRounded(
-    vec3 vDir, vec3 vPos, float rain, float time, vec3 horizonCol, vec3 zenithCol,
-    const int steps, const float thickness, const float thickness_rain, const float speed,
+    sampler2D cloudTex, vec3 vDir, vec3 vPos, float rain, float time, vec3 horizonCol, vec3 zenithCol, const float thickness, const float thickness_rain, const float speed,
     const vec2 scale, const float density, const vec2 boxiness
 ) {
   float height = 7.0*mix(thickness, thickness_rain, rain);
-  float stepsf = float(steps);
+  float stepsf = 5.0;
 
   // scaled ray offset
   vec3 deltaP;
@@ -78,25 +80,27 @@ vec4 renderCloudsRounded(
   pos += deltaP;
 
   deltaP /= -stepsf;
+  pos += deltaP * hash(vPos.xz + time);
 
   // alpha, gradient
-  vec2 d = vec2(0.0,1.0);
-  for (int i=1; i<=steps; i++) {
-    float m = cloudDf(pos, rain, boxiness);
+  vec2 d = vec2(0.0,0.5);
+  for (int i=1; i<=int(stepsf); i++) {
+    float m = cloudDf(pos, rain, boxiness, cloudTex);
     d.x += m;
     d.y = mix(d.y, pos.y, m);
     pos += deltaP;
   }
-  d.x *= smoothstep(0.03, 0.1, d.x);
+  d.x *= smoothstep(0.7, 1.0, d.x);
   d.x /= (stepsf/density) + d.x;
 
   if (vPos.y < 0.0) { // view from top
     d.y = 1.0 - d.y;
   }
 
-  vec4 col = vec4(zenithCol + horizonCol, d.x);
-  col.rgb += dot(col.rgb, vec3(0.3,0.4,0.3))*d.y*d.y;
-  col.rgb *= 1.0 - 0.8*rain;
+  vec4 col = vec4(horizonCol*0.8 + zenithCol, d.x);
+  col.rgb = mix(col.rgb, mix(col.rgb,zenithCol,1.0), smoothstep(1.0,0.05,d.y));
+  col.rgb += dot(col.rgb, vec3(0.8,0.9,0.8))*d.y*d.y;
+  col.rgb *= 1.0 - 0.3*rain;
   return col;
 }
 

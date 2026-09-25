@@ -1,0 +1,7 @@
+{
+  "format_version": "1.8.0",
+  "geometry.humanoid.armor.helmet.trim:geometry.humanoid.armor.helmet": {},
+  "geometry.humanoid.armor.chestplate.trim:geometry.humanoid.armor.chestplate": {},
+  "geometry.humanoid.armor.leggings.trim:geometry.humanoid.armor.leggings": {},
+  "geometry.humanoid.armor.boots.trim:geometry.humanoid.armor.boots": {}
+}
