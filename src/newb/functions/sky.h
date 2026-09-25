@@ -349,7 +349,7 @@ vec3 GetAurora(vec3 vDir, float time, float dither, sampler2D noiseTex) {
   float height = abs(vDir.y);
   float visibility = smoothstep(0.0, 0.5, height);
   visibility = clamp(visibility, 0.0, 1.0);
-  if (visibility < 0.01) return vec3(0.0);
+  if (visibility < 0.01) return vec3_splat(0.0);
 
   vec3 aurora = vec3(0.0);
   vDir.xz /= max(vDir.y*0.1, 0.0);
