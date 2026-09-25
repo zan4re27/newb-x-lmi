@@ -351,9 +351,9 @@ vec3 GetAurora(vec3 vDir, float time, float dither, sampler2D noiseTex) {
   visibility = clamp(visibility, 0.0, 1.0);
   if (visibility < 0.01) return vec3_splat(0.0);
 
-  vec3 aurora = vec3(0.0);
+  vec3 aurora = vec3_splat(0.0);
   vDir.xz /= max(vDir.y*0.1, 0.0);
-  vec2 cameraPosM = vec2(0.0);
+  vec2 cameraPosM = vec2_splat(0.0);
   cameraPosM.x += time * 0.65;
 
   const int sampleCount = 5;
