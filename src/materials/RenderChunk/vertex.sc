@@ -115,11 +115,16 @@ void main() {
   relativeDist += RenderChunkFogAlpha.x;
 
   vec4 fogColor;
+  vec3 fogVDir = viewDir;
+  if (env.end) {
+    fogVDir = normalize(vec3(viewDir.x, 0.0, viewDir.z));
+  }
   fogColor.rgb = nlRenderSky(skycol, env, viewDir, t, true);
   fogColor.a = nlRenderFogFade(env, skycol, fogColor.rgb, relativeDist, FogColor.rgb, FogAndDistanceControl.xy, worldPos, vec3(0.0,0.0,0.0), t);
   #if defined(NL_GODRAY) && defined(NL_FOG)
     fogColor.a = nlRenderGodRay(cPos, worldPos, t, uv1, relativeDist, FogColor.rgb, fogColor.a);
   #endif
+  fogColor.a = smoothstep(0.0, 0.85, fogColor.a);
 
   /*if (env.nether) {
     fogColor.rgb = colorCorrectionInv(FogColor.rgb);

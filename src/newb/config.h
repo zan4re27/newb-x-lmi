@@ -31,7 +31,7 @@
 #define NL_TONEMAP_TYPE 3              // 1:Exponential, 2:Reinhard, 3:Extended Reinhard, 4:ACES
 #define NL_GAMMA 1.33                  // 0.3 low ~ 2.0 high
 //#define NL_EXPOSURE 1.3              // [toggle] 0.5 dark ~ 3.0 bright
-#define NL_SATURATION 1.2            // [toggle] 0.0 grayscale ~ 4.0 super saturated
+//#define NL_SATURATION 1.1            // [toggle] 0.0 grayscale ~ 4.0 super saturated
 //#define NL_TINT                      // [toggle] enable light/dark tone tinting
 #define NL_TINT_LOW  vec3(0.3,0.5,1.4) // color tint for dark tone
 #define NL_TINT_HIGH vec3(1.4,0.7,0.3) // color tint for light tone
@@ -44,13 +44,15 @@
 //#define NL_BLINKING_TORCH  // [toggle] flickering light
 //#define NL_CLOUD_SHADOW      // [toggle] cloud shadow (simple clouds only)
 
+#define NL_SHADE_MODE 1 // 0:vanilla, 1: directional shadow, 2: static shadow
+
 /* Ambient light for nether/end */
 #define NL_NETHER_AMBIENT vec3(2.0,1.16,0.89)
 #define NL_END_AMBIENT    vec3(0.98,0.25,1.3)
 
 /* Sun/moon light color */
 #define NL_DAWN_SUNLIGHT_COL   vec3(1.0,0.4,0.1)
-#define NL_NOON_SUNLIGHT_COL   vec3(0.9,0.9,0.9)
+#define NL_NOON_SUNLIGHT_COL   vec3(0.9,0.9,0.85)
 #define NL_NIGHT_MOONLIGHT_COL vec3(0.01,0.03,0.2)*0.2
 
 /* Torch colors */
@@ -108,7 +110,7 @@
 #define NL_WAVE_RANGE 13.0     // 6.0 upto 6 blocks ~ 32.0 upto 32 blocks away (slower)
 
 /* Water */
-#define NL_WATER_TRANSPARENCY 0.75 // 0.0 transparent ~ 1.0 normal
+#define NL_WATER_TRANSPARENCY 0.87 // 0.0 transparent ~ 1.0 normal
 #define NL_WATER_BUMP 0.09        // 0.001 plain ~ 0.2 bumpy water
 #define NL_WATER_WAVE_SPEED  0.8  // 0.2 calm ~ 2.0 turbulent
 #define NL_WATER_TEX_OPACITY 0.0  // 0.0 plain water ~ 1.0 vanilla water texture

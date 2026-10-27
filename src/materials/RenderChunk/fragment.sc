@@ -55,17 +55,21 @@ void main() {
 
   diffuse.rgb *= color.rgb;
   
-  float ao = mix(1.0, 0.8, smoothstep(0.74, 0.52, v_color1.g));
-  diffuse.rgb *= ao;
-  
-  float t = 2.0 * PI * TimeOfDay.x;
-  vec3 sunDir = vec3(-sin(t), cos(t), 0.0);
-  vec3 wmap = normalize(cross(dFdx(v_wPos), dFdy(v_wPos)));
-
-  if (v_extra.b <= 0.9) {
-    float ds = dirShadow(wmap, sunDir, v_lightmapUV.y);
-    diffuse.rgb *= ds;
-  }
+  #if NL_SHADE_MODE == 2
+    if (v_extra.b <= 0.9) {
+      float ao = mix(1.0, 0.75, smoothstep(0.64, 0.62, v_color1.g));
+      diffuse.rgb *= ao;
+    }
+  #elif NL_SHADE_MODE == 1
+    float t = 2.0 * PI * TimeOfDay.x;
+    vec3 sunDir = vec3(-sin(t), cos(t), 0.0);
+    
+    if (v_extra.b <= 0.9 && v_isTree <= 0.5) {
+        vec3 wmap = normalize(cross(dFdx(v_wPos), dFdy(v_wPos)));
+        float ds = dirShadow(wmap, sunDir, v_lightmapUV.y);
+        diffuse.rgb *= ds;
+    }
+  #endif
   
   #if !defined(TRANSPARENT)
     if (v_isTree <= 0.3 && !(v_extra.b > 0.9)) {

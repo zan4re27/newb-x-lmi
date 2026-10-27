@@ -1,15 +1,16 @@
 {
-  "name": "NoiseVoxel",
-  "reg1": 8,
-  "reg2": 8,
+  "name": "CloudTexture",
+  "register_slot": 11,
+  "binding_slot": 11,
   "type": "texture2D",
   "precision": "lowp",
   "access": "readonly",
   "texture_format": "",
   "default_texture": "",
   "unordered_access": false,
-  "always_one": 1,
-  "texture_path": "textures/environment/noiseVoxel",
+  "slot_count": 1,
+  "texture_path": "textures/environment/cloud_texture",
+  "unknown": 0,
   "sampler_state": {
     "filter": "Bilinear",
     "wrapping": "Repeat"

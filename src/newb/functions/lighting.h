@@ -242,7 +242,7 @@ float dirShadow(vec3 normal, vec3 sunDir, float skylight) {
     float intensity = 1.0 - smoothstep(0.0, 0.2, sunDot);
     intensity = clamp(intensity, 0.0, 1.0);
     
-    float noonFade = smoothstep(0.95, 0.7, sunDir.y);
+    float noonFade = smoothstep(0.993, 0.7, sunDir.y);
     intensity *= noonFade;
     
     float fac = mix(1.0, shadou, intensity);

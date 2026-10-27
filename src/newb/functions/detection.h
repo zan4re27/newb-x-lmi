@@ -36,7 +36,8 @@ bool detectNether(vec3 FOG_COLOR, vec2 FOG_CONTROL) {
   return (netherFogCtrl && netherFogCol) || underLava;
 }
 
-bool detectUnderwater(vec3 FOG_COLOR, vec2 FOG_CONTROL) {
+bool detectUnderwater(vec3 FOG_COLOR, vec2 FOG_CONTROL, float rainFactor) {
+  if (rainFactor > 0.3) return false;
   return FOG_CONTROL.x==0.0 && FOG_CONTROL.y<0.8 && (FOG_COLOR.b>FOG_COLOR.r || FOG_COLOR.g>FOG_COLOR.r);
 }
 
@@ -76,8 +77,8 @@ nl_environment nlDetectEnvironment(float TIME_OF_DAY, vec3 FOG_COLOR, vec3 FOG_C
   nl_environment env;
   env.end = detectEnd(FOG_COLOR);
   env.nether = detectNether(FOG_COLOR, FOG_CONTROL.xy);
-  env.underwater = detectUnderwater(FOG_COLOR, FOG_CONTROL.xy);
   env.rainFactor = detectRain(FOG_CONTROL.xyz);
+  env.underwater = detectUnderwater(FOG_COLOR, FOG_CONTROL.xy, env.rainFactor);
   env.fogCol = FOG_COLOR;
   env = calculateSunParams(env, TIME_OF_DAY);
   return env;

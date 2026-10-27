@@ -63,7 +63,8 @@ float cloudDf(vec3 pos, float rain, vec2 boxiness, sampler2D cloudTex) {
 
 vec4 renderCloudsRounded(
     sampler2D cloudTex, vec3 vDir, vec3 vPos, float rain, float time, vec3 horizonCol, vec3 zenithCol, const float thickness, const float thickness_rain, const float speed,
-    const vec2 scale, const float density, const vec2 boxiness
+    const vec2 scale, const float density, const vec2 boxiness,
+    float dither
 ) {
   float height = 7.0*mix(thickness, thickness_rain, rain);
   float stepsf = 5.0;
@@ -80,7 +81,7 @@ vec4 renderCloudsRounded(
   pos += deltaP;
 
   deltaP /= -stepsf;
-  pos += deltaP * hash(vPos.xz + time);
+  pos += deltaP * dither;
 
   // alpha, gradient
   vec2 d = vec2(0.0,0.5);
@@ -92,6 +93,8 @@ vec4 renderCloudsRounded(
   }
   d.x *= smoothstep(0.7, 1.0, d.x);
   d.x /= (stepsf/density) + d.x;
+  d.x += (dither - 0.5) * 0.02;
+  d.x = clamp(d.x, 0.0, 1.0);
 
   if (vPos.y < 0.0) { // view from top
     d.y = 1.0 - d.y;

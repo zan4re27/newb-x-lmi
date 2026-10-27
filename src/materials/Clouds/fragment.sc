@@ -23,7 +23,8 @@ void main() {
     cloudPos.xz += CameraPosition.xz;
 
     #if NL_CLOUD_TYPE == 2
-      color = renderCloudsRounded(s_CloudTexture, vDir, cloudPos, v_color1.w, v_color2.w, v_color2.rgb, v_color1.rgb, NL_CLOUD_PARAMS(_));
+      float dither =texture2D(s_BlueNoise, fract(gl_FragCoord.xy/256.0)).r;
+      color = renderCloudsRounded(s_CloudTexture, vDir, cloudPos, v_color1.w, v_color2.w, v_color2.rgb, v_color1.rgb, NL_CLOUD_PARAMS(_), dither);
 
       #ifdef NL_CLOUD2_LAYER2
         vec2 parallax = vDir.xz / abs(vDir.y) * NL_CLOUD2_LAYER2_OFFSET;
