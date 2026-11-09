@@ -76,7 +76,7 @@ void main() {
 
   vec2 offset = 1.0 / vec2(textureSize(s_MatTexture, 0));
   vec2 sampleUV = v_texcoord0 + offset * vec2(-0.1, -0.1);
-  sampleUV = clamp(sampleUV, vec2(0.001), vec2(0.999));
+  sampleUV = clamp(sampleUV, vec2_splat(0.001), vec2_splat(0.999));
   vec4 neighborTex = texture2D(s_MatTexture, sampleUV);
   if (diffuse.a > 0.6 && neighborTex.a > 0.6) {
     vec3 neighbor = neighborTex.rgb;

@@ -106,6 +106,13 @@ description = '''
 '''
 
 [[subpack]]
+define = "OLD_SHADOW"
+materials = ["RenderChunk"]
+description = '''
+§lOld styled static shadow!§r\nIf you like the old one then here you go
+'''
+
+[[subpack]]
 define = "DEFAULT"
 materials = []
 description = '''

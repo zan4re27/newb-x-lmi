@@ -261,6 +261,11 @@
  #define NL_SHADE_MODE 0
 #endif
 
+#ifdef OLD_SHADOW
+ #undef NL_SHADE_MODE
+ #define NL_SHADE_MODE 2
+#endif
+
 /*#ifdef LITE
   #define NO_WAVE
   #undef NL_GLOW_LEAK
