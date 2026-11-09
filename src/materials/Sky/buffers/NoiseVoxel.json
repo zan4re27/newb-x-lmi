@@ -1,5 +1,5 @@
 {
-  "name": "CloudTexture",
+  "name": "NoiseVoxel",
   "register_slot": 11,
   "binding_slot": 11,
   "type": "texture2D",

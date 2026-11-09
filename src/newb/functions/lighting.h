@@ -9,7 +9,7 @@
 
 vec3 sunLightTint(float dayFactor, float rain) {
   float nightFactor = step(dayFactor, 0.0);
-  float dawnFactor = 1.0-dayFactor*dayFactor;
+  float dawnFactor = 1.0-smoothstep(0.0, 0.7, abs(dayFactor));
   dawnFactor *= dawnFactor*dawnFactor;
   dawnFactor *= mix(1.0, dawnFactor*dawnFactor, nightFactor);
   vec3 tint = mix(NL_NOON_SUNLIGHT_COL, NL_NIGHT_MOONLIGHT_COL, nightFactor);
@@ -98,7 +98,7 @@ vec3 nlLighting(
     light += (skycol.horizon + skycol.zenith)*(uv1.y/(1.0+lum));
     
     // rain dimming
-    light *= mix(1.0, 0.75, smoothstep(0.0, 1.0, env.rainFactor));
+    light *= mix(1.0, 0.65, smoothstep(0.0, 1.0, env.rainFactor));
   }
 
   // torch light

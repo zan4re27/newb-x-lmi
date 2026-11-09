@@ -28,19 +28,20 @@
 */
 
 /* Color correction */
-#define NL_TONEMAP_TYPE 3              // 1:Exponential, 2:Reinhard, 3:Extended Reinhard, 4:ACES
-#define NL_GAMMA 1.33                  // 0.3 low ~ 2.0 high
+#define NL_TONEMAP_TYPE 4              // 1:Exponential, 2:Reinhard, 3:Extended Reinhard, 4:ACES
+#define NL_GAMMA 1.1                  // 0.3 low ~ 2.0 high
+//#define NL_CONTRAST 1.0
 //#define NL_EXPOSURE 1.3              // [toggle] 0.5 dark ~ 3.0 bright
-//#define NL_SATURATION 1.1            // [toggle] 0.0 grayscale ~ 4.0 super saturated
+#define NL_SATURATION 0.7            // [toggle] 0.0 grayscale ~ 4.0 super saturated
 //#define NL_TINT                      // [toggle] enable light/dark tone tinting
 #define NL_TINT_LOW  vec3(0.3,0.5,1.4) // color tint for dark tone
 #define NL_TINT_HIGH vec3(1.4,0.7,0.3) // color tint for light tone
 
 /* Lighting */
-#define NL_SUNLIGHT_INTENSITY   3.5  // 1.0 weak ~ 5.0 bright
-#define NL_TORCHLIGHT_INTENSITY 0.95  // 0.5 weak ~ 3.0 bright
+#define NL_SUNLIGHT_INTENSITY   3.6  // 1.0 weak ~ 5.0 bright
+#define NL_TORCHLIGHT_INTENSITY 0.75  // 0.5 weak ~ 3.0 bright
 #define NL_SHADOW_INTENSITY     0.9  // 0.0 no shadow ~ 1.0 strong shadow
-#define NL_MIN_LIGHTING_BOOST   1.0  // 1.0 minimal lighting boost for dark areas ~ 3.0 brighter dark areas
+#define NL_MIN_LIGHTING_BOOST   0.8  // 1.0 minimal lighting boost for dark areas ~ 3.0 brighter dark areas
 //#define NL_BLINKING_TORCH  // [toggle] flickering light
 //#define NL_CLOUD_SHADOW      // [toggle] cloud shadow (simple clouds only)
 
@@ -52,11 +53,11 @@
 
 /* Sun/moon light color */
 #define NL_DAWN_SUNLIGHT_COL   vec3(1.0,0.4,0.1)
-#define NL_NOON_SUNLIGHT_COL   vec3(0.9,0.9,0.85)
-#define NL_NIGHT_MOONLIGHT_COL vec3(0.01,0.03,0.2)*0.2
+#define NL_NOON_SUNLIGHT_COL   vec3(0.9,0.9,0.87)
+#define NL_NIGHT_MOONLIGHT_COL vec3(0.01,0.03,0.2)
 
 /* Torch colors */
-#define NL_OVERWORLD_TORCH_COL  vec3(1.0, 0.7333, 0.3451)
+#define NL_OVERWORLD_TORCH_COL  vec3(1.0, 0.6, 0.22)
 #define NL_UNDERWATER_TORCH_COL vec3(0.9,0.92,0.98)
 #define NL_NETHER_TORCH_COL     vec3(1.0,0.22,0.22)
 #define NL_END_TORCH_COL        vec3(1.0,0.5,1.0)
@@ -74,8 +75,8 @@
 
 /* Sky colors - zenith=top, horizon=bottom */
 #define NL_DAWN_ZENITH_COL   vec3(0.07,0.18,0.53)
-#define NL_DAWN_HORIZON_COL  vec3(3.0,1.0,0.0)
-#define NL_DAWN_EDGE_COL     vec3(3.0,1.0,0.0)
+#define NL_DAWN_HORIZON_COL  vec3(5.0,1.0,0.0)
+#define NL_DAWN_EDGE_COL     vec3(5.0,1.0,0.0)
 
 #define NL_DAY_ZENITH_COL    vec3(0.29,0.5,1.0)
 #define NL_DAY_HORIZON_COL   vec3(0.6863, 0.8431, 1.0)
@@ -110,7 +111,7 @@
 #define NL_WAVE_RANGE 13.0     // 6.0 upto 6 blocks ~ 32.0 upto 32 blocks away (slower)
 
 /* Water */
-#define NL_WATER_TRANSPARENCY 0.87 // 0.0 transparent ~ 1.0 normal
+#define NL_WATER_TRANSPARENCY 1.2 // 0.0 transparent ~ 1.0 normal
 #define NL_WATER_BUMP 0.09        // 0.001 plain ~ 0.2 bumpy water
 #define NL_WATER_WAVE_SPEED  0.8  // 0.2 calm ~ 2.0 turbulent
 #define NL_WATER_TEX_OPACITY 0.0  // 0.0 plain water ~ 1.0 vanilla water texture
@@ -210,7 +211,7 @@
 
 /* Entity (Actor, ItemInHand) */
 #define NL_ENTITY_BRIGHTNESS     0.65 // 0.1 dark ~ 1.6 bright
-#define NL_ENTITY_EDGE_HIGHLIGHT 0.31 // [toggle] 0.0 no highlight ~ 1.6 bright highlight
+#define NL_ENTITY_EDGE_HIGHLIGHT 0.21 // [toggle] 0.0 no highlight ~ 1.6 bright highlight
 
 /* Weather particles */
 #define NL_WEATHER_SPECK 0.2         // [toggle] 0.0 vanilla texture ~ 1.0 soft speck
@@ -255,7 +256,12 @@
  #define NL_MIN_LIGHTING_BOOST 4.0
 #endif
 
-#ifdef LITE
+#ifdef NO_SHADOW
+ #undef NL_SHADE_MODE
+ #define NL_SHADE_MODE 0
+#endif
+
+/*#ifdef LITE
   #define NO_WAVE
   #undef NL_GLOW_LEAK
   #undef NL_GLOW_SHIMMER
@@ -267,7 +273,7 @@
   #undef NL_RAIN_MIST_OPACITY
   #undef NL_CLOUDY_FOG
   #undef NL_ENTITY_EDGE_HIGHLIGHT
-#endif
+#endif*/
 
 #ifdef NO_WAVE_NO_FOG
   #define NO_WAVE

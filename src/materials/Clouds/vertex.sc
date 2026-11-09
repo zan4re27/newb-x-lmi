@@ -29,7 +29,7 @@ void main() {
   #endif
 
   float t = ViewPositionAndTime.w;
-  float rain = detectRain(FogAndDistanceControl.xyz);
+  float rain = detectRain(FogAndDistanceControl.xyz, false);
 
   nl_environment env;
   env.end = false;

@@ -9,7 +9,7 @@ description = '''
 ''' # %w = patch warning, %v = version
 authors = ["zan4re27", "devendrn"]
 url = "https://newb-shader.devendrn.com/"
-uuid = "95f774cf-4afa-73e7-a21a-72146307b1d2" # Use https://www.uuidgenerator.net/version4
+uuid = "4bab5074-cc13-4c79-b131-f0f57158f87d" # Use https://www.uuidgenerator.net/version4
 materials = ["Actor", "ActorGlint", "ActorMultiTexture", "Clouds", "EndSky", "ItemInHandColor", "ItemInHandColorGlint", "ItemInHandTextured", "RenderChunk","Sky", "Stars", "SunMoon", "Weather"]
 
 [info] 
@@ -57,7 +57,7 @@ description = '''
 
 [[subpack]]
 define = "NO_SHOOTING_STARS"
-materials = ["RenderChunk"]
+materials = ["Sky"]
 description = '''
 §lDisable Shooting Stars§r\nfor someone who doesn't like it
 '''
@@ -99,10 +99,10 @@ description = '''
 '''
 
 [[subpack]]
-define = "LITE"
-materials = ["Sky", "RenderChunk", "Actor", "ActorGlint", "EndSky", "Clouds", "SunMoon", "Weather", "ItemInHandTextured", "ItemInHandColor", "ItemInHandColorGlint", "Stars"]
+define = "NO_SHADOW"
+materials = ["RenderChunk"]
 description = '''
-§lLite!§r\nLots of effect is disabled for smoother experience
+§lNo shadow!§r\nPerfect for Dynamic shadow mod pairs (Android only)
 '''
 
 [[subpack]]

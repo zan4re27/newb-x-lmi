@@ -32,6 +32,11 @@ vec3 colorCorrection(vec3 col) {
 
   // gamma correction
   col = pow(col, vec3_splat(1.0/NL_GAMMA));
+  
+  #ifdef NL_CONTRAST
+    col = (col - 0.5) * NL_CONTRAST + 0.5;
+    col = clamp(col, 0.0, 1.0);
+  #endif
 
   #ifdef NL_SATURATION
     col = mix(vec3_splat(luminance(col)), col, NL_SATURATION);

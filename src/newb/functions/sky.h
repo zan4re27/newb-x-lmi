@@ -354,13 +354,13 @@ vec3 GetAurora(vec3 vDir, float time, float dither, sampler2D noiseTex) {
   vec3 aurora = vec3_splat(0.0);
   vDir.xz /= max(vDir.y*0.1, 0.0);
   vec2 cameraPosM = vec2_splat(0.0);
-  cameraPosM.x += time * 0.65;
+  cameraPosM.x += time * 0.45;
 
   const int sampleCount = 5;
   const int sampleCountP = sampleCount + 12;
 
   float ditherM = dither + 10.0;
-  float auroraAnimate = time * 0.0035;
+  float auroraAnimate = time * 0.0;
 
   for (int i = 0; i < sampleCount; i++) {
     float current = pow2((float(i) + ditherM) / float(sampleCountP));
@@ -373,7 +373,7 @@ vec3 GetAurora(vec3 vDir, float time, float dither, sampler2D noiseTex) {
     float currentM = 1.0 - current;
     aurora += noise * currentM * mix(vec3(1.0, 0.0, 1.0)*1.5, vec3(0.0, 1.0, 1.0)*24.5, pow2(pow2(currentM)))*3.0;
   }
-  aurora *= 3.8;
+  aurora *= 4.8;
   return aurora * visibility / float(sampleCount);
 }
 

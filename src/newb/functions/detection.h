@@ -36,19 +36,18 @@ bool detectNether(vec3 FOG_COLOR, vec2 FOG_CONTROL) {
   return (netherFogCtrl && netherFogCol) || underLava;
 }
 
-bool detectUnderwater(vec3 FOG_COLOR, vec2 FOG_CONTROL, float rainFactor) {
-  if (rainFactor > 0.3) return false;
-  return FOG_CONTROL.x==0.0 && FOG_CONTROL.y<0.8 && (FOG_COLOR.b>FOG_COLOR.r || FOG_COLOR.g>FOG_COLOR.r);
+bool detectUnderwater(vec3 FOG_COLOR, vec2 FOG_CONTROL) {
+    bool morblu = FOG_COLOR.b > FOG_COLOR.r * 1.8 && FOG_COLOR.b > 0.3;
+    return FOG_CONTROL.x == 0.0 && FOG_CONTROL.y < 0.8 && morblu;
 }
 
-float detectRain(vec3 FOG_CONTROL) {
-  // clear fogctrl.x varies with render distance (z)
-  // reverse plotted as 0.5 + 1.25/k (k is renderdistance in chunks, fogctrl.z = k*16)
-  vec2 clear = vec2(0.5 + 20.0/FOG_CONTROL.z, 1.0); // clear fogctrl value
-  vec2 rain = vec2(0.23, 0.70); // rain fogctrl value
-  vec2 factor = clamp((FOG_CONTROL.xy-clear)/(rain-clear), vec2(0.0,0.0), vec2(1.0,1.0));
-  float val = factor.x*factor.y;
-  return val*val*(3.0 - 2.0*val);
+float detectRain(vec3 FOG_CONTROL, bool underwater) {
+    if (underwater) return 0.0;
+    vec2 clear = vec2(0.5 + 20.0/FOG_CONTROL.z, 1.0);
+    vec2 rain  = vec2(0.23, 0.70);
+    vec2 factor = clamp((FOG_CONTROL.xy-clear)/(rain-clear), vec2(0.0,0.0), vec2(1.0,1.0));
+    float val = factor.x*factor.y;
+    return val*val*(3.0 - 2.0*val);
 }
 
 float detectDayFactor(vec3 FOG_COLOR) {
@@ -77,8 +76,8 @@ nl_environment nlDetectEnvironment(float TIME_OF_DAY, vec3 FOG_COLOR, vec3 FOG_C
   nl_environment env;
   env.end = detectEnd(FOG_COLOR);
   env.nether = detectNether(FOG_COLOR, FOG_CONTROL.xy);
-  env.rainFactor = detectRain(FOG_CONTROL.xyz);
-  env.underwater = detectUnderwater(FOG_COLOR, FOG_CONTROL.xy, env.rainFactor);
+  env.underwater = detectUnderwater(FOG_COLOR, FOG_CONTROL.xy);
+  env.rainFactor = detectRain(FOG_CONTROL.xyz, env.underwater);
   env.fogCol = FOG_COLOR;
   env = calculateSunParams(env, TIME_OF_DAY);
   return env;
