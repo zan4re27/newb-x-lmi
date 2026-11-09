@@ -106,21 +106,6 @@ void main() {
   diffuse.rgb *= color.rgb;
   vec3 wmap    = normalize(cross(dFdx(v_wPos), dFdy(v_wPos)));
   
-if (v_extra.b > 0.9) {
-    vec2 depthUV = gl_FragCoord.xy / vec2(textureSize(s_SceneDepthBuffer, 0));
-    float rawBehind   = texture2D(s_SceneDepthBuffer, depthUV).r;
-    float behind      = sceneDepthLinear(rawBehind);
-    float waterSurface = sceneDepthLinear(gl_FragCoord.z);
-    float thickness    = max(behind - waterSurface, 0.0);
-
-    // Visualize: red = thickness, green = behind, blue = waterSurface
-    diffuse.rgb = vec3(
-        clamp(thickness * 0.1, 0.0, 1.0),
-        clamp(behind * 0.01, 0.0, 1.0),
-        clamp(waterSurface * 0.01, 0.0, 1.0)
-    );
-}
-  
   if (v_extra.b > 0.9) {
     diffuse.rgb += v_refl.rgb * v_refl.a;
   } else if (v_refl.a > 0.0) {
@@ -162,6 +147,7 @@ if (v_extra.b > 0.9) {
   diffuse.rgb = mix(diffuse.rgb, v_fog.rgb, v_fog.a);
   diffuse.rgb = colorCorrection(diffuse.rgb);
   
+  #ifdef BGFX_SHADER_LANGUAGE_GLSL
   if (v_extra.b > 0.9 && v_refl.a > 0.0) {
     vec3 wmap    = normalize(cross(dFdx(v_wPos), dFdy(v_wPos)));
     vec3 viewDir = normalize(v_wPos);
@@ -170,6 +156,7 @@ if (v_extra.b > 0.9) {
 
     diffuse.rgb = ssr(v_wPos, viewDir, wmap, NdotV, correctedSky);
   }
+  #endif
 
   gl_FragColor = diffuse;
 }
